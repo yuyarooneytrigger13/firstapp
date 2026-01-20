@@ -1,14 +1,28 @@
 package in.techcamp.firstapp;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class PostController {
     @GetMapping("/hello")
-    @ResponseBody
-    public String showHello(){
-        return "<h1>Hello World!<h1>";
+    public String showHello(Model model){
+        var sampleText = "サンプルテキスト";
+        model.addAttribute("sampleText", sampleText);
+        return "hello";
+    }
+
+    @GetMapping/// ルートパスの記述は省略可("/")
+    public String showList(Model model){
+        var postList = List.of(
+                new PostEntity(1, "投稿１"),
+                new PostEntity(2, "投稿２"),
+                new PostEntity(3, "投稿３")
+        );
+        model.addAttribute("postList",postList);
+        return "index";
     }
 }
