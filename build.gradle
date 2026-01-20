@@ -19,14 +19,23 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// 修正：webmvc ではなく web に変更
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// MyBatis (バージョンを最新の 3.0.4 に合わせるのが無難です)
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	// MySQL Connector
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// テスト関連も web 形式に修正
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

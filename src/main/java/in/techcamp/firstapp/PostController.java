@@ -1,13 +1,17 @@
 package in.techcamp.firstapp;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class PostController {
+    private final PostRepository postRepository;
+
     @GetMapping("/hello")
     public String showHello(Model model){
         var sampleText = "サンプルテキスト";
@@ -17,12 +21,19 @@ public class PostController {
 
     @GetMapping/// ルートパスの記述は省略可("/")
     public String showList(Model model){
-        var postList = List.of(
-                new PostEntity(1, "投稿１"),
-                new PostEntity(2, "投稿２"),
-                new PostEntity(3, "投稿３")
-        );
+        var postList = postRepository.findAll();
         model.addAttribute("postList",postList);
         return "index";
+    }
+
+    @GetMapping("/postForm")
+    public String showPostForm(@ModelAttribute("postForm") PostForm form){
+        return "postForm";
+    }
+
+    @PostMapping("/posts")
+    public String savePost(PostForm form){
+        postRepository.insert(form.getMemo());
+        return "redirect:/";
     }
 }
